@@ -8,24 +8,13 @@ import {
   getProductsByCategory,
 } from './js/products-api';
 
-import { handleCategories, handleProducts } from './js/handlers';
-
-import { renderCategories, renderCarts } from './js/render-function';
-
+import { handleCategories, handleLoadMore } from './js/handlers';
+import { renderCategories, renderCards } from './js/render-function';
 import { refs } from './js/refs';
-
-let page = 1;
+import { startpage } from './js/constants';
 
 refs.categories.addEventListener('click', handleCategories);
-
-// console.log(getAllProducts(1));
-// getAllProducts(1).then(response => console.log(response.products));
-
-// getProductByName('smartphone').then(response => console.log(response));
-
-// getCategoriesList().then(response => console.log(response));
-
-// getProductsByCategory('smartphones').then(response => console.log(response));
+refs.loadMoreBtn.addEventListener('click', handleLoadMore);
 
 getCategoriesList()
   .then(response =>
@@ -34,13 +23,17 @@ getCategoriesList()
       renderCategories([...['All'], ...response])
     )
   )
-  .catch(error => alert(error.message));
+  .catch(error => alert(error.message))
+  .finally(() => {
+    refs.categories.firstElementChild.firstElementChild.classList.add(
+      'categories__btn--active'
+    );
+  });
 
-getAllProducts(page)
+getAllProducts(startpage)
   .then(response =>
-    refs.products.insertAdjacentHTML(
-      'beforeend',
-      renderCarts(response.products)
-    )
+    refs.products.insertAdjacentHTML('beforeend', renderCards(response))
   )
   .catch(error => console.log(error.message));
+
+// ==================== Load More ====================

@@ -7,7 +7,7 @@ export async function getAllProducts(currentPage) {
     const response = await axios.get(
       `https://dummyjson.com/products?limit=12&skip=${(currentPage - 1) * 12}`
     );
-    return response.data;
+    return response.data.products;
   } catch (error) {
     alert(error.message);
   }
@@ -44,12 +44,14 @@ export async function getCategoriesList() {
   }
 }
 
-export async function getProductsByCategory(category) {
+export async function getProductsByCategory(currentPage, category) {
   try {
     const response = await axios.get(
-      `https://dummyjson.com/products/category/${category}`
+      `https://dummyjson.com/products/category/${category}?limit=12&skip=${
+        (currentPage - 1) * 12
+      }`
     );
-    return response.data;
+    return response.data.products;
   } catch (error) {
     alert(error.message);
   }

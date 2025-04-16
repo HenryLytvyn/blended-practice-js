@@ -5,57 +5,62 @@ import {
   getProductsByCategory,
   getProductById,
 } from './products-api';
-import { renderCarts, renderModalCart } from './render-function';
+import { renderCards, renderModalCard } from './render-function';
+import {
+  toggleActiveCategory,
+  getProducts,
+  checkCategoryAvailability,
+} from './helpers';
+
 import { refs } from './refs';
+import { startpage } from './constants.js';
+
+let currentCategory = 'All';
+let currentPage = startpage;
+
+//!================= home.js =================
 
 export function handleCategories(event) {
   if (!event.target.classList.contains('categories__btn')) {
     return;
   }
 
+  currentPage = startpage;
+  refs.products.innerHTML = '';
   const categoryBtns = Array.from(refs.categories.children);
 
-  //! ===========================================
+  toggleActiveCategory(categoryBtns, event.target);
 
-  for (const categoryBtn of categoryBtns) {
-    if (
-      categoryBtn.firstElementChild.classList.contains(
-        'categories__btn--active'
-      )
-    ) {
-      categoryBtn.firstElementChild.classList.remove('categories__btn--active');
-      break;
-    }
-  }
+  currentCategory = event.target.textContent;
 
-  event.target.classList.add('categories__btn--active');
-  const category = event.target.innerHTML;
-  if (category === 'All') {
-    getAllProducts(1)
-      .then(
-        response => (refs.products.innerHTML = renderCarts(response.products))
-      )
-      .catch(error => console.log(error.message));
-  }
-
-  getProductsByCategory(category)
-    .then(response => {
-      refs.products.innerHTML = renderCarts(response.products);
-    })
-    .catch(error => console.log(error.message));
+  getProducts(startpage, currentCategory);
 }
 
-//! ===========================================
+// ===========================================
 
-export function handleProducts(event) {
+export function handleLoadMore() {
+  currentPage++;
+  getProducts(currentPage, currentCategory);
+}
+
+//!================= modal.js =================
+
+export function handleOpenModal(event) {
   if (event.target.classList.contains('products')) {
     return;
   }
 
-  return Number(event.target.closest('.products__item').dataset.id);
+  const eventId = Number(event.target.closest('.products__item').dataset.id);
+
+  getProductById(eventId)
+    .then(response => {
+      refs.modalProduct.innerHTML = renderModalCard(response);
+      refs.modal.classList.add('modal--is-open');
+    })
+    .catch(error => console.log(error.message));
 }
 
-//! ===========================================
+// ===========================================
 
 export function handleCloseModal() {
   refs.modal.classList.remove('modal--is-open');

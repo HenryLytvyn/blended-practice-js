@@ -11,7 +11,7 @@ export function renderCategories(arr) {
     .join('');
 }
 
-export function renderCarts(arr) {
+export function renderCards(arr) {
   return arr
     .map(
       ({ id, images, description, title, brand, category, price }) => `
@@ -27,7 +27,7 @@ export function renderCarts(arr) {
     .join('');
 }
 
-export function renderModalCart({ images, description, title, tags, price }) {
+export function renderModalCard({ images, description, title, tags, price }) {
   return `<img class="modal-product__img" src="${images[0]}" alt="${tags}" />
       <div class="modal-product__content">
         <p class="modal-product__title">${title}</p>
