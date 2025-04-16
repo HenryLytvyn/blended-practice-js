@@ -56,3 +56,25 @@ export async function getProductsByCategory(currentPage, category) {
     alert(error.message);
   }
 }
+
+export async function getTotalProductsAmount() {
+  try {
+    const response = await axios.get(`https://dummyjson.com/products`);
+    // console.log(response.data.total);
+    return response.data.total;
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+export async function getCategoriesProductsAmount(category) {
+  try {
+    const response = await axios.get(
+      `https://dummyjson.com/products/category/${category}`
+    );
+    // console.log(response.data.products.length);
+    return response.data.products.length;
+  } catch (error) {
+    alert(error.message);
+  }
+}

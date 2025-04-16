@@ -10,4 +10,5 @@ export const refs = {
   modalCloseBtn: document.querySelector('.modal__close-btn'),
   notFound: document.querySelector('.not-found'),
   loadMoreBtn: document.querySelector('.load-more__btn'),
+  loader: document.querySelector('.loader-js'),
 };

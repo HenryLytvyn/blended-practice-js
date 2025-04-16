@@ -40,17 +40,39 @@ export function getProducts(page, category) {
         refs.products.insertAdjacentHTML('beforeend', renderCards(response));
       })
       .catch(error => console.log(error.message));
-    console.log(page);
     return;
   }
 
   getProductsByCategory(page, category)
     .then(response => {
-      console.log(response);
-      console.log(page);
-      console.log(category);
       checkCategoryAvailability(response);
       refs.products.insertAdjacentHTML('beforeend', renderCards(response));
     })
     .catch(error => console.log(error.message));
+}
+
+//!================= LoadMore =================
+
+export function hideLoadMoreButton() {
+  refs.loadMoreBtn.classList.add('visually-hidden');
+}
+
+export function showLoadMoreButton() {
+  refs.loadMoreBtn.classList.remove('visually-hidden');
+}
+
+//!================= Loader =================
+
+export function hideLoader() {
+  refs.loader.classList.remove('loader');
+}
+
+export function showLoader() {
+  refs.loader.classList.add('loader');
+}
+
+//!================= Loader =================
+
+export function errorNoMoreProducts() {
+  alert('No more products!');
 }

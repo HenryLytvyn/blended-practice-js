@@ -2,14 +2,24 @@
 
 import {
   getAllProducts,
-  getProductsByCategory,
+  getCategoriesList,
   getProductById,
+  getProductByName,
+  getProductsByCategory,
+  getTotalProductsAmount,
+  getCategoriesProductsAmount,
 } from './products-api';
+
 import { renderCards, renderModalCard } from './render-function';
 import {
   toggleActiveCategory,
   getProducts,
   checkCategoryAvailability,
+  hideLoadMoreButton,
+  showLoadMoreButton,
+  showLoader,
+  hideLoader,
+  errorNoMoreProducts,
 } from './helpers';
 
 import { refs } from './refs';
@@ -17,6 +27,7 @@ import { startpage } from './constants.js';
 
 let currentCategory = 'All';
 let currentPage = startpage;
+let maxPage = 1;
 
 //!================= home.js =================
 
@@ -34,13 +45,61 @@ export function handleCategories(event) {
   currentCategory = event.target.textContent;
 
   getProducts(startpage, currentCategory);
+
+  console.log(currentCategory);
+  console.log(checkMoreCategoriesProducts(currentCategory));
+
+  if (checkMoreCategoriesProducts(currentCategory) === currentPage) {
+    console.log('?');
+  } else {
+  }
+  // if (currentPage) showLoadMoreButton();
 }
 
 // ===========================================
 
 export function handleLoadMore() {
   currentPage++;
+  showLoader();
+
   getProducts(currentPage, currentCategory);
+  checkMoreAllProducts();
+
+  hideLoader();
+}
+
+function checkMoreAllProducts() {
+  if (currentCategory === 'All') {
+    getTotalProductsAmount()
+      .then(response => {
+        maxPage = Math.ceil(Number(response) / 12);
+
+        if (currentPage >= maxPage) {
+          hideLoadMoreButton();
+          if (currentPage > 2) {
+            errorNoMoreProducts();
+          }
+        }
+      })
+      .catch(error => console.log(error.message));
+  } else {
+    checkMoreCategoriesProducts(currentCategory);
+  }
+}
+
+function checkMoreCategoriesProducts(currentCategory) {
+  getCategoriesProductsAmount(currentCategory)
+    .then(response => {
+      maxPage = Math.ceil(Number(response) / 12);
+
+      if (currentPage >= maxPage) {
+        hideLoadMoreButton();
+        if (currentPage > 2) {
+          errorNoMoreProducts();
+        }
+      }
+    })
+    .catch(error => console.log(error.message));
 }
 
 //!================= modal.js =================
