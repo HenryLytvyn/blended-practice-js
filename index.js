@@ -1,26 +1,25 @@
-import"./assets/styles-0jjx1hvP.js";import{a as c}from"./assets/vendor-C19taMLP.js";async function d(t){try{return(await c.get(`https://dummyjson.com/products?limit=12&skip=${(t-1)*12}`)).data}catch(e){alert(e.message)}}async function p(t){try{return(await c.get(`https://dummyjson.com/products/${t}`)).data}catch(e){alert(e.message)}}async function m(){try{return(await c.get("https://dummyjson.com/products/category-list")).data}catch(t){alert(t.message)}}async function g(t){try{return(await c.get(`https://dummyjson.com/products/category/${t}`)).data}catch(e){alert(e.message)}}function _(t){return t.map(e=>`<li class="categories__item">
-   <button class="categories__btn" type="button">${e}</button>
+import"./assets/styles-B513HK9d.js";import{a as n}from"./assets/vendor-C19taMLP.js";async function p(t){try{return(await n.get(`https://dummyjson.com/products?limit=12&skip=${(t-1)*12}`)).data.products}catch(o){alert(o.message)}}async function f(t){try{return(await n.get(`https://dummyjson.com/products/${t}`)).data}catch(o){alert(o.message)}}async function h(){try{return(await n.get("https://dummyjson.com/products/category-list")).data}catch(t){alert(t.message)}}async function b(t,o){try{return(await n.get(`https://dummyjson.com/products/category/${o}?limit=12&skip=${(t-1)*12}`)).data.products}catch(e){alert(e.message)}}function L(t){return t.map(o=>`<li class="categories__item">
+   <button class="categories__btn" type="button">${o}</button>
  </li>
-`).join("")}function n(t){return t.map(({id:e,images:o,description:s,title:a,brand:i,category:l,price:u})=>`
-  <li class="products__item" data-id="${e}">
-    <img class="products__image" src="${o[0]}" alt="${s}"/>
+`).join("")}function d(t){return t.map(({id:o,images:e,description:c,title:a,brand:g,category:_,price:y})=>`
+  <li class="products__item" data-id="${o}">
+    <img class="products__image" src="${e[0]}" alt="${c}"/>
     <p class="products__title">${a}</p>
-    <p class="products__brand"><span class="products__brand--bold">Brand: ${i}</span></p>
-    <p class="products__category">Category: ${l}</p>
-    <p class="products__price">Price: ${u}</p>
+    <p class="products__brand"><span class="products__brand--bold">Brand: ${g}</span></p>
+    <p class="products__category">Category: ${_}</p>
+    <p class="products__price">Price: ${y}</p>
  </li>
-`).join("")}function y({images:t,description:e,title:o,tags:s,price:a}){return`<img class="modal-product__img" src="${t[0]}" alt="${s}" />
+`).join("")}function C({images:t,description:o,title:e,tags:c,price:a}){return`<img class="modal-product__img" src="${t[0]}" alt="${c}" />
       <div class="modal-product__content">
-        <p class="modal-product__title">${o}</p>
-        <ul class="modal-product__tags">${s}</ul>
-        <p class="modal-product__description">${e}</p>
+        <p class="modal-product__title">${e}</p>
+        <ul class="modal-product__tags">${c}</ul>
+        <p class="modal-product__description">${o}</p>
         <p class="modal-product__shipping-information">Shipping:</p>
         <p class="modal-product__return-policy">Return Policy:</p>
         <p class="modal-product__price">Price: ${a}</p>
         <button class="modal-product__buy-btn" type="button">Buy</button>
       </div>
-`}const r={categories:document.querySelector(".categories"),products:document.querySelector(".products"),productsItem:document.querySelector(".products__item"),categoriesBtn:document.querySelector(".categories__btn"),modal:document.querySelector(".modal"),modalProduct:document.querySelector(".modal-product"),modalCloseBtn:document.querySelector(".modal__close-btn")};function h(t){if(!t.target.classList.contains("categories__btn"))return;const e=Array.from(r.categories.children);//! ===========================================
-for(const s of e)if(s.firstElementChild.classList.contains("categories__btn--active")){s.firstElementChild.classList.remove("categories__btn--active");break}t.target.classList.add("categories__btn--active");const o=t.target.innerHTML;o==="All"&&d(1).then(s=>r.products.innerHTML=n(s.products)).catch(s=>console.log(s.message)),g(o).then(s=>{r.products.innerHTML=n(s.products)}).catch(s=>console.log(s.message))}//! ===========================================
-function f(t){if(!t.target.classList.contains("products"))return Number(t.target.closest(".products__item").dataset.id)}//! ===========================================
-function b(){r.modal.classList.remove("modal--is-open")}let L=1;r.categories.addEventListener("click",h);m().then(t=>r.categories.insertAdjacentHTML("beforeend",_(["All",...t]))).catch(t=>alert(t.message));d(L).then(t=>r.products.insertAdjacentHTML("beforeend",n(t.products))).catch(t=>console.log(t.message));r.products.addEventListener("click",t=>{const e=f(t);p(e).then(o=>{console.log(o),r.modalProduct.innerHTML=y(o),r.modal.classList.add("modal--is-open")}).catch(o=>console.log(o.message))});r.modalCloseBtn.addEventListener("click",b);
+`}const s={categories:document.querySelector(".categories"),products:document.querySelector(".products"),productsItem:document.querySelector(".products__item"),categoriesBtn:document.querySelector(".categories__btn"),modal:document.querySelector(".modal"),modalProduct:document.querySelector(".modal-product"),modalCloseBtn:document.querySelector(".modal__close-btn"),notFound:document.querySelector(".not-found"),loadMoreBtn:document.querySelector(".load-more__btn")};function $(t,o){for(const e of t)if(e.firstElementChild.classList.contains("categories__btn--active")){e.firstElementChild.classList.remove("categories__btn--active");break}o.classList.add("categories__btn--active")}function u(t){t.length?s.notFound.classList.remove("not-found--visible"):s.notFound.classList.add("not-found--visible")}function m(t,o){if(o==="All"){p(t).then(e=>{u(e),s.products.insertAdjacentHTML("beforeend",d(e))}).catch(e=>console.log(e.message)),console.log(t);return}b(t,o).then(e=>{console.log(e),console.log(t),console.log(o),u(e),s.products.insertAdjacentHTML("beforeend",d(e))}).catch(e=>console.log(e.message))}const r=1;let l="All",i=r;//!================= home.js =================
+function v(t){if(!t.target.classList.contains("categories__btn"))return;i=r,s.products.innerHTML="";const o=Array.from(s.categories.children);$(o,t.target),l=t.target.textContent,m(r,l)}function M(){i++,m(i,l)}//!================= modal.js =================
+function A(t){if(t.target.classList.contains("products"))return;const o=Number(t.target.closest(".products__item").dataset.id);f(o).then(e=>{s.modalProduct.innerHTML=C(e),s.modal.classList.add("modal--is-open")}).catch(e=>console.log(e.message))}function B(){s.modal.classList.remove("modal--is-open")}s.categories.addEventListener("click",v);s.loadMoreBtn.addEventListener("click",M);h().then(t=>s.categories.insertAdjacentHTML("beforeend",L(["All",...t]))).catch(t=>alert(t.message)).finally(()=>{s.categories.firstElementChild.firstElementChild.classList.add("categories__btn--active")});p(r).then(t=>s.products.insertAdjacentHTML("beforeend",d(t))).catch(t=>console.log(t.message));s.products.addEventListener("click",A);s.modalCloseBtn.addEventListener("click",B);
 //# sourceMappingURL=index.js.map
