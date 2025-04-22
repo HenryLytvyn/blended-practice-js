@@ -39,8 +39,14 @@ getAllProducts(startpage)
   )
   .catch(error => console.log(error.message));
 
-// showLoadMoreButton();
+getTotalProductsAmount()
+  .then(response => {
+    if (Math.ceil(Number(response) / 12) > 1) {
+      showLoadMoreButton();
+    } else {
+      hideLoadMoreButton();
+    }
+  })
+  .catch(error => error.message);
 
 // ==================== Load More ====================
-getTotalProductsAmount();
-getCategoriesProductsAmount('groceries');

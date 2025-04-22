@@ -20,6 +20,7 @@ import {
   showLoader,
   hideLoader,
   errorNoMoreProducts,
+  checkPagesQuantity,
 } from './helpers';
 
 import { refs } from './refs';
@@ -36,6 +37,9 @@ export function handleCategories(event) {
     return;
   }
 
+  checkCategoryAvailability(currentCategory);
+  hideLoadMoreButton();
+
   currentPage = startpage;
   refs.products.innerHTML = '';
   const categoryBtns = Array.from(refs.categories.children);
@@ -46,14 +50,7 @@ export function handleCategories(event) {
 
   getProducts(startpage, currentCategory);
 
-  console.log(currentCategory);
-  console.log(checkMoreCategoriesProducts(currentCategory));
-
-  if (checkMoreCategoriesProducts(currentCategory) === currentPage) {
-    console.log('?');
-  } else {
-  }
-  // if (currentPage) showLoadMoreButton();
+  checkPagesQuantity(currentCategory);
 }
 
 // ===========================================
@@ -76,9 +73,13 @@ function checkMoreAllProducts() {
 
         if (currentPage >= maxPage) {
           hideLoadMoreButton();
-          if (currentPage > 2) {
-            errorNoMoreProducts();
-          }
+          // if (currentPage > 2) {
+          //   errorNoMoreProducts();
+          // }
+        }
+        if (currentPage !== 1 && currentPage >= maxPage) {
+          console.log(currentPage);
+          errorNoMoreProducts();
         }
       })
       .catch(error => console.log(error.message));
@@ -94,9 +95,13 @@ function checkMoreCategoriesProducts(currentCategory) {
 
       if (currentPage >= maxPage) {
         hideLoadMoreButton();
-        if (currentPage > 2) {
-          errorNoMoreProducts();
-        }
+        // if (currentPage > 2) {
+        //   errorNoMoreProducts();
+        // }
+      }
+      if (currentPage !== 1 && currentPage >= maxPage) {
+        console.log(currentPage);
+        errorNoMoreProducts();
       }
     })
     .catch(error => console.log(error.message));

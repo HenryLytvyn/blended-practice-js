@@ -2,6 +2,8 @@ import {
   getAllProducts,
   getProductsByCategory,
   getProductById,
+  getTotalProductsAmount,
+  getCategoriesProductsAmount,
 } from './products-api';
 import { renderCards, renderModalCard } from './render-function';
 
@@ -36,19 +38,43 @@ export function getProducts(page, category) {
   if (category === 'All') {
     getAllProducts(page)
       .then(response => {
-        checkCategoryAvailability(response);
+        // checkCategoryAvailability(response);
         refs.products.insertAdjacentHTML('beforeend', renderCards(response));
       })
       .catch(error => console.log(error.message));
-    return;
   }
 
   getProductsByCategory(page, category)
     .then(response => {
-      checkCategoryAvailability(response);
+      // checkCategoryAvailability(response);
       refs.products.insertAdjacentHTML('beforeend', renderCards(response));
     })
     .catch(error => console.log(error.message));
+}
+
+export function checkPagesQuantity(category) {
+  if (category === 'All') {
+    getTotalProductsAmount()
+      .then(response => {
+        if (Math.ceil(Number(response) / 12) > 1) {
+          showLoadMoreButton();
+        } else {
+          hideLoadMoreButton();
+        }
+      })
+      .catch(error => error.message);
+    return;
+  }
+
+  getCategoriesProductsAmount(category)
+    .then(response => {
+      if (Math.ceil(Number(response) / 12) > 1) {
+        showLoadMoreButton();
+      } else {
+        hideLoadMoreButton();
+      }
+    })
+    .catch(error => error.message);
 }
 
 //!================= LoadMore =================

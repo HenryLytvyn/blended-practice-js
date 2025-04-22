@@ -72,7 +72,7 @@ export async function getCategoriesProductsAmount(category) {
     const response = await axios.get(
       `https://dummyjson.com/products/category/${category}`
     );
-    // console.log(response.data.products.length);
+    // console.log(typeof response.data.products.length);
     return response.data.products.length;
   } catch (error) {
     alert(error.message);
